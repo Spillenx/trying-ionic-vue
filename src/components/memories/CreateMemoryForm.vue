@@ -6,8 +6,13 @@
         <ion-input type="text" required v-model="enteredTitle" />
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Image URL</ion-label>
-        <ion-input type="text" required v-model="enteredImageUrl"></ion-input>
+        <ion-thumbnail slot="start">
+          <img src="" alt="" />
+        </ion-thumbnail>
+        <ion-button type="button" fill="clear" @click="takePhoto">
+          <ion-icon slot="start" :icon="camera"></ion-icon>
+          TAKE PHOTO
+        </ion-button>
       </ion-item>
       <ion-item>
         <ion-textarea rows="5" v-model="enteredDescription"></ion-textarea>
@@ -24,20 +29,34 @@ import {
   IonLabel,
   IonInput,
   IonTextarea,
-  IonButton
+  IonButton,
+  IonThumbnail,
+  IonIcon
 } from '@ionic/vue'
+import { camera } from 'ionicons/icons'
 
 export default {
   emits: ['save-memory'],
-  components: { IonList, IonItem, IonLabel, IonInput, IonTextarea, IonButton },
+  components: {
+    IonList,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonTextarea,
+    IonButton,
+    IonThumbnail,
+    IonIcon
+  },
   data() {
     return {
       enteredTitle: '',
       enteredImageUrl: '',
-      enteredDescription: ''
+      enteredDescription: '',
+      camera
     }
   },
   methods: {
+    takePhoto() {},
     submitForm() {
       const memoryData = {
         title: this.enteredTitle,
