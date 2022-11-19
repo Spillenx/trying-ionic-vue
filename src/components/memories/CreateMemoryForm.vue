@@ -7,7 +7,7 @@
       </ion-item>
       <ion-item>
         <ion-thumbnail slot="start">
-          <img src="" alt="" />
+          <img :src="takenImageUrl" alt="" />
         </ion-thumbnail>
         <ion-button type="button" fill="clear" @click="takePhoto">
           <ion-icon slot="start" :icon="camera"></ion-icon>
@@ -34,6 +34,9 @@ import {
   IonIcon
 } from '@ionic/vue'
 import { camera } from 'ionicons/icons'
+import { Plugins, CameraResultType, CameraSource } from '@capacitor/core'
+
+const { Camera } = Plugins
 
 export default {
   emits: ['save-memory'],
@@ -50,17 +53,25 @@ export default {
   data() {
     return {
       enteredTitle: '',
-      enteredImageUrl: '',
+      takenImageUrl: '',
       enteredDescription: '',
       camera
     }
   },
   methods: {
-    takePhoto() {},
+    async takePhoto() {
+      const photo = await Camera.getPhoto({
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Camera,
+        quality: 60
+      })
+
+      this.takenImageUrl = photo.webPath
+    },
     submitForm() {
       const memoryData = {
         title: this.enteredTitle,
-        imageUrl: this.enteredImageUrl,
+        imageUrl: this.takenImageUrl,
         description: this.enteredDescription
       }
       this.$emit('save-memory', memoryData)
